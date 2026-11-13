@@ -1,0 +1,111 @@
+{
+  "meta": {
+    "name": "Muhammad Ali Baig",
+    "age": 15,
+    "role": "9th Grade Student & ACCP AI Student",
+    "institution": "Aptech Certified Computer Professional in Artificial Intelligence",
+    "fonts": ["Inter", "SF Pro"],
+    "colors": {
+      "dark": {
+        "cyanNavy": "#092742",
+        "ghostWhite": "#FEFFFA",
+        "neonPear": "#D23A00"
+      },
+      "light": {
+        "canvas": "#F5F3EF",
+        "text": "#08090B",
+        "accent": "#FFC900"
+      }
+    }
+  },
+  "navigation": {
+    "menuItems": [
+      { "label": "Overview", "ariaLabel": "Go to overview and hero section", "link": "#hero" },
+      { "label": "Skills", "ariaLabel": "View technical skills and toolkit", "link": "#skills" },
+      { "label": "Projects", "ariaLabel": "View my projects", "link": "#projects" },
+      { "label": "Contact", "ariaLabel": "Get in touch with me", "link": "#contact" }
+    ],
+    "socialItems": [
+      { "label": "GitHub", "link": "https://github.com/muhammadalibaig77" },
+      { "label": "LinkedIn", "link": "https://www.linkedin.com/in/muhammad-ali-baig-675287432" },
+      { "label": "Twitter", "link": "https://twitter.com" }
+    ]
+  },
+  "hero": {
+    "badge": "9th Grade Student • Aptech ACCP AI",
+    "techHeading": "ALI BAIG",
+    "subheading": "15-year-old student learning web development and software foundations",
+    "tagline": "Enrolled in the Aptech Certified Computer Professional in AI program. Practicing HTML, CSS, JavaScript, Bootstrap, and version control while building real web pages.",
+    "galleryImages": [
+      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&h=600&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&h=600&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&h=600&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1629654297299-c8506221ca97?w=600&h=600&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&h=600&fit=crop&q=80"
+    ]
+  },
+  "skills": {
+    "techHeading": "SKILLS",
+    "subtitle": "Technologies and tools I practice and use in my coursework and personal experiments.",
+    "categories": [
+      {
+        "id": "html-css",
+        "title": "HTML & CSS",
+        "description": "Semantic markup, responsive page layouts, Flexbox structures, and CSS styling fundamentals.",
+        "skills": ["HTML5", "CSS3", "Flexbox", "Responsive Layouts", "Google Fonts"]
+      },
+      {
+        "id": "javascript",
+        "title": "JavaScript & jQuery",
+        "description": "DOM manipulation, event handling, core script functions, and jQuery integration for interactive controls.",
+        "skills": ["JavaScript", "DOM Manipulation", "Event Listeners", "jQuery", "AJAX Basics"]
+      },
+      {
+        "id": "frameworks",
+        "title": "Bootstrap",
+        "description": "Building mobile-friendly, responsive layouts with Bootstrap 5 components and grid utilities.",
+        "skills": ["Bootstrap 5", "Grid System", "Navigation Bars", "Card Layouts", "Utility Classes"]
+      },
+      {
+        "id": "data-tools",
+        "title": "Data Formats & Git",
+        "description": "Data representation formats and version control workflow basics for sharing code.",
+        "skills": ["JSON", "XML", "Git Basics", "GitHub", "VS Code"]
+      }
+    ]
+  },
+  "projects": {
+    "techHeading": "PROJECTS",
+    "subtitle": "Selected personal project demonstrating my current web implementation work.",
+    "items": [
+      {
+        "id": "portfolio",
+        "title": "Personal Portfolio Website",
+        "badge": "React • Tailwind CSS • Vite",
+        "description": "A responsive personal site presenting my technical skills and project links. Built with modern component architecture and clean design tokens.",
+        "stack": ["HTML5", "CSS3", "JavaScript", "React", "Tailwind CSS", "Vite"],
+        "metric": "Live single-page application deployed on modern infrastructure",
+        "highlights": [
+          "Responsive multi-section layout built with modular React components",
+          "Engineered with a strict 3-color palette and 4px spacing scale",
+          "Interactive specular hover effects and animated section transitions"
+        ],
+        "gallery": [
+          "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=480&h=480&fit=crop",
+          "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=480&h=480&fit=crop",
+          "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=480&h=480&fit=crop"
+        ]
+      }
+    ]
+  },
+  "contact": {
+    "techHeading": "CONTACT",
+    "headline": "Open for conversations, advice, and learning opportunities",
+    "description": "I welcome advice from developers, questions about my projects, or discussions on student internships and beginner collaborations.",
+    "email": "alibaig.dev@gmail.com",
+    "github": "https://github.com/muhammadalibaig77",
+    "linkedin": "https://www.linkedin.com/in/muhammad-ali-baig-675287432",
+    "location": "Karachi, Pakistan",
+    "status": "Available for learning opportunities and mentorship"
+  }
+}

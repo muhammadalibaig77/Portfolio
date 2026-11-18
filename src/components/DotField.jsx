@@ -374,7 +374,10 @@ const DotField = ({
       powerPreference: 'high-performance'
     });
     const shader = gl ? link(gl) : null;
-    if (!gl || !shader) return;
+    if (!gl || !shader) {
+      canvas.style.display = 'none';
+      return;
+    }
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const vao = gl.createVertexArray();
@@ -584,8 +587,16 @@ const DotField = ({
       lost = true;
       cancelAnimationFrame(raf);
       raf = 0;
+      if (canvas) {
+        canvas.style.display = 'none';
+      }
     };
-    const onRestored = () => setGeneration(value => value + 1);
+    const onRestored = () => {
+      if (canvas) {
+        canvas.style.display = 'block';
+      }
+      setGeneration(value => value + 1);
+    };
     canvas.addEventListener('webglcontextlost', onLost);
     canvas.addEventListener('webglcontextrestored', onRestored);
 

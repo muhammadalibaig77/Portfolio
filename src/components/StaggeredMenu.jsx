@@ -2,6 +2,9 @@
 
 import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
+import SpecularButton from './SpecularButton';
+import AnimatedList from './AnimatedList';
+import { THEME_PALETTES } from '../lib/themes';
 import './StaggeredMenu.css';
 
 export const StaggeredMenu = ({
@@ -22,9 +25,14 @@ export const StaggeredMenu = ({
   onMenuOpen,
   onMenuClose,
   headerAction = null,
-  isDark = true
+  isDark = true,
+  currentTheme = 'gothic',
+  onThemeSelect,
+  panelBg,
+  panelBorder
 }) => {
   const [open, setOpen] = useState(false);
+  const [isThemeListOpen, setIsThemeListOpen] = useState(false);
   const openRef = useRef(false);
   const panelRef = useRef(null);
   const preLayersRef = useRef(null);
@@ -342,10 +350,68 @@ export const StaggeredMenu = ({
     };
   }, [closeOnClickAway, open, closeMenu]);
 
+  const activePalette = THEME_PALETTES[currentTheme]?.[isDark ? 'dark' : 'light'];
+  const paletteText = activePalette?.text || (isDark ? '#FEFFFA' : '#08090B');
+  const paletteTextMuted = activePalette?.textMuted || (isDark ? 'rgba(254, 255, 250, 0.7)' : 'rgba(8, 9, 11, 0.7)');
+
+  const themeItems = [
+    {
+      id: 'gothic',
+      title: 'Gothic',
+      description: isDark
+        ? 'Midnight Black 60% • Deep Sapphire 30% • Crimson Red 10%'
+        : 'Antique Silver 60% • Deep Sapphire 30% • Crimson Red 10%',
+      meta: currentTheme === 'gothic' ? 'Active' : 'Select',
+      icon: (
+        <span className="flex items-center gap-1">
+          <span className="w-2.5 h-2.5 rounded-full border border-white/20 shadow-sm" style={{ backgroundColor: isDark ? '#0B0B0F' : '#C0C0C0' }} />
+          <span className="w-2.5 h-2.5 rounded-full border border-white/20 shadow-sm" style={{ backgroundColor: '#0F1C3F' }} />
+          <span className="w-2.5 h-2.5 rounded-full border border-white/20 shadow-sm" style={{ backgroundColor: '#8B0000' }} />
+        </span>
+      )
+    },
+    {
+      id: 'classic',
+      title: 'Classic Cyan',
+      description: isDark
+        ? 'Cyan Navy 60% • Ghost White 30% • Neon Pear 10%'
+        : 'Canvas 60% • Text Ink 30% • Gold Amber 10%',
+      meta: currentTheme === 'classic' ? 'Active' : 'Select',
+      icon: (
+        <span className="flex items-center gap-1">
+          <span className="w-2.5 h-2.5 rounded-full border border-white/20 shadow-sm" style={{ backgroundColor: isDark ? '#092742' : '#F5F3EF' }} />
+          <span className="w-2.5 h-2.5 rounded-full border border-white/20 shadow-sm" style={{ backgroundColor: isDark ? '#0e3253' : '#e8e4da' }} />
+          <span className="w-2.5 h-2.5 rounded-full border border-white/20 shadow-sm" style={{ backgroundColor: isDark ? '#D23A00' : '#FFC900' }} />
+        </span>
+      )
+    },
+    {
+      id: 'emerald',
+      title: 'Emerald Matrix',
+      description: isDark
+        ? 'Obsidian 60% • Deep Emerald 30% • Neon Mint 10%'
+        : 'Mint Silver 60% • Deep Forest 30% • Emerald 10%',
+      meta: currentTheme === 'emerald' ? 'Active' : 'Select',
+      icon: (
+        <span className="flex items-center gap-1">
+          <span className="w-2.5 h-2.5 rounded-full border border-white/20 shadow-sm" style={{ backgroundColor: isDark ? '#08100C' : '#DDEAE4' }} />
+          <span className="w-2.5 h-2.5 rounded-full border border-white/20 shadow-sm" style={{ backgroundColor: isDark ? '#0A291E' : '#C8DDD3' }} />
+          <span className="w-2.5 h-2.5 rounded-full border border-white/20 shadow-sm" style={{ backgroundColor: isDark ? '#00FF88' : '#047857' }} />
+        </span>
+      )
+    }
+  ];
+
   return (
     <div
       className={(className ? className + ' ' : '') + 'staggered-menu-wrapper' + (isFixed ? ' fixed-wrapper' : '')}
-      style={accentColor ? { ['--sm-accent']: accentColor } : undefined}
+      style={{
+        ...(accentColor ? { ['--sm-accent']: accentColor } : {}),
+        ...(panelBg ? { ['--sm-panel-bg']: panelBg } : {}),
+        ...(panelBorder ? { ['--sm-border']: panelBorder } : {}),
+        ['--sm-text']: paletteText,
+        ['--sm-text-muted']: paletteTextMuted
+      }}
       data-position={position}
       data-theme={isDark ? 'dark' : 'light'}
       data-open={open || undefined}
@@ -416,6 +482,66 @@ export const StaggeredMenu = ({
               </li>
             )}
           </ul>
+
+          {/* Theme Palette Switcher at the end of the menu */}
+          <div className="sm-theme-section">
+            <div className="sm-theme-header">
+              <span className="sm-theme-title">Palette</span>
+              <span className="sm-theme-current">
+                {THEME_PALETTES[currentTheme]?.name || 'Gothic'}
+              </span>
+            </div>
+
+            <SpecularButton
+              size="lg"
+              radius={18}
+              tint={isDark ? '#ffffff' : '#000000'}
+              tintOpacity={isDark ? 0.04 : 0.08}
+              textColor={isDark ? '#f5f5f5' : paletteText}
+              lineColor={isDark ? '#ffffff' : (accentColor || '#047857')}
+              baseColor={isDark ? '#525252' : 'rgba(0, 0, 0, 0.08)'}
+              intensity={1}
+              idleIntensity={0.35}
+              shineSize={10}
+              shineFade={34}
+              thickness={1.2}
+              glow={1}
+              followMouse
+              proximity={250}
+              style={{
+                backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.06)',
+                borderColor: isDark ? 'rgba(255, 255, 255, 0.16)' : 'rgba(0, 0, 0, 0.18)',
+                borderWidth: '1px',
+                borderStyle: 'solid',
+                color: isDark ? '#f5f5f5' : paletteText,
+                fontWeight: 600
+              }}
+              onClick={() => {
+                console.log('clicked');
+                setIsThemeListOpen(prev => !prev);
+              }}
+              className="sm-theme-specular-btn"
+            >
+              {isThemeListOpen ? 'Close Theme List' : 'Change Theme'}
+            </SpecularButton>
+
+            {isThemeListOpen && (
+              <div className="sm-theme-list-container">
+                <AnimatedList
+                  items={themeItems}
+                  onItemSelect={(item, index) => {
+                    console.log(item, index);
+                    onThemeSelect?.(item.id || item, index);
+                  }}
+                  animation="pop"
+                  theme={isDark ? 'dark' : 'light'}
+                  accentColor={accentColor}
+                  width="100%"
+                  maxHeight={260}
+                />
+              </div>
+            )}
+          </div>
           {displaySocials && socialItems && socialItems.length > 0 && (
             <div className="sm-socials" aria-label="Social links">
               <h3 className="sm-socials-title">Socials</h3>

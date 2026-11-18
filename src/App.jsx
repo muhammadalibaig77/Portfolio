@@ -6,12 +6,21 @@ import AnimatedContent from './components/AnimatedContent';
 import BounceCards from './components/BounceCards';
 import SpecularButton from './components/SpecularButton';
 import ThemeToggle from './components/ThemeToggle';
+import { getPalette, applyThemeToDocument, DEFAULT_THEME_ID, THEME_PALETTES } from './lib/themes';
 import data from './data/portfolioData.json';
 
 export default function App() {
   const [windowWidth, setWindowWidth] = useState(
     typeof window !== 'undefined' ? window.innerWidth : 1200
   );
+
+  const [currentTheme, setCurrentTheme] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const savedTheme = localStorage.getItem('theme_palette');
+      if (savedTheme && THEME_PALETTES[savedTheme]) return savedTheme;
+    }
+    return DEFAULT_THEME_ID;
+  });
 
   const [isDark, setIsDark] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -30,18 +39,14 @@ export default function App() {
 
   useEffect(() => {
     if (typeof document !== 'undefined') {
-      if (isDark) {
-        document.documentElement.classList.add('dark');
-        document.documentElement.classList.remove('light');
-      } else {
-        document.documentElement.classList.remove('dark');
-        document.documentElement.classList.add('light');
-      }
+      applyThemeToDocument(currentTheme, isDark);
+      localStorage.setItem('theme_palette', currentTheme);
       localStorage.setItem('theme', isDark ? 'dark' : 'light');
     }
-  }, [isDark]);
+  }, [currentTheme, isDark]);
 
   const toggleTheme = () => setIsDark((prev) => !prev);
+  const palette = getPalette(currentTheme, isDark);
 
   // Responsive font sizes for TechText headings
   const heroHeadingSize = windowWidth < 640 ? 52 : windowWidth < 1024 ? 84 : 120;
@@ -56,18 +61,18 @@ export default function App() {
 
   return (
     <div
-      className={`relative min-h-screen transition-colors duration-300 ${
-        isDark
-          ? 'bg-[#092742] text-[#FEFFFA] selection:bg-[#D23A00] selection:text-[#FEFFFA]'
-          : 'bg-[#F5F3EF] text-[#08090B] selection:bg-[#FFC900] selection:text-[#08090B]'
-      } overflow-x-hidden`}
+      className="relative min-h-screen transition-colors duration-300 overflow-x-hidden"
+      style={{
+        backgroundColor: palette.bg,
+        color: palette.text
+      }}
     >
       {/* 1. REQUIRED BACKGROUND COMPONENT: DotField (Larger dots, theme-aware) */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <DotField
-          gradientFrom={isDark ? '#D23A00' : '#FFC900'}
-          gradientTo={isDark ? '#092742' : '#F5F3EF'}
-          glowColor={isDark ? '#FEFFFA' : '#08090B'}
+          gradientFrom={palette.accent}
+          gradientTo={palette.bg}
+          glowColor={palette.dotGlow}
           dotRadius={2.4}
           dotSpacing={22}
           cursorRadius={180}
@@ -77,22 +82,33 @@ export default function App() {
         />
       </div>
 
-      {/* 2. REQUIRED MENU COMPONENT: StaggeredMenu with ThemeToggle */}
+      {/* 2. REQUIRED MENU COMPONENT: StaggeredMenu with SpecularButton & AnimatedList Theme Switcher */}
       <StaggeredMenu
         position="right"
         items={data.navigation.menuItems}
         socialItems={data.navigation.socialItems}
         displaySocials={true}
         displayItemNumbering={true}
-        menuButtonColor={isDark ? '#FEFFFA' : '#08090B'}
-        openMenuButtonColor={isDark ? '#FEFFFA' : '#08090B'}
+        menuButtonColor={palette.text}
+        openMenuButtonColor={palette.text}
         changeMenuColorOnOpen={true}
-        colors={isDark ? ['#0e3253', '#092742'] : ['#e8e4da', '#F5F3EF']}
+        colors={palette.menuColors}
         logoUrl="/react.svg"
-        accentColor={isDark ? '#D23A00' : '#FFC900'}
+        accentColor={palette.accent}
+        panelBg={palette.menuPanelBg}
+        panelBorder={palette.border}
         isFixed={true}
         isDark={isDark}
-        headerAction={<ThemeToggle isDark={isDark} onToggle={toggleTheme} />}
+        currentTheme={currentTheme}
+        onThemeSelect={(themeId) => setCurrentTheme(themeId)}
+        headerAction={
+          <ThemeToggle
+            isDark={isDark}
+            onToggle={toggleTheme}
+            accentColor={palette.accent}
+            surfaceColor={palette.surface}
+          />
+        }
       />
 
       {/* MAIN CONTENT WRAPPER */}
@@ -118,8 +134,8 @@ export default function App() {
                 fontWeight={700}
                 fontSize={heroHeadingSize}
                 fontFamily="'SF Pro Display', -apple-system, 'Inter', sans-serif"
-                color={isDark ? '#FEFFFA' : '#08090B'}
-                accentColor={isDark ? '#D23A00' : '#FFC900'}
+                color={palette.text}
+                accentColor={palette.accent}
                 reveal="letter"
                 dashLength={4}
                 dashGap={2}
@@ -132,10 +148,10 @@ export default function App() {
             </div>
 
             {/* Sub-heading & Description */}
-            <h2 className={`text-2xl sm:text-3xl font-semibold tracking-tight ${isDark ? 'text-[#FEFFFA]' : 'text-[#08090B]'} mb-4 max-w-2xl leading-snug`}>
+            <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight mb-4 max-w-2xl leading-snug" style={{ color: palette.text }}>
               {data.hero.subheading}
             </h2>
-            <p className={`text-base sm:text-lg ${isDark ? 'text-[#FEFFFA]/70' : 'text-[#08090B]/70'} max-w-2xl leading-relaxed mb-8`}>
+            <p className="text-base sm:text-lg max-w-2xl leading-relaxed mb-8" style={{ color: palette.textMuted }}>
               {data.hero.tagline}
             </p>
 
@@ -144,11 +160,11 @@ export default function App() {
               <SpecularButton
                 size="lg"
                 radius={16}
-                tint={isDark ? '#FEFFFA' : '#08090B'}
+                tint={palette.text}
                 tintOpacity={0.06}
-                textColor={isDark ? '#FEFFFA' : '#08090B'}
-                lineColor={isDark ? '#FEFFFA' : '#08090B'}
-                baseColor={isDark ? '#D23A00' : '#FFC900'}
+                textColor="#ffffff"
+                lineColor={palette.text}
+                baseColor={palette.specularPrimaryBase}
                 intensity={1}
                 idleIntensity={0.35}
                 shineSize={10}
@@ -158,8 +174,8 @@ export default function App() {
                 followMouse
                 proximity={240}
                 style={{
-                  backgroundColor: isDark ? '#D23A00' : '#FFC900',
-                  color: isDark ? '#FEFFFA' : '#08090B',
+                  backgroundColor: palette.specularPrimaryBase,
+                  color: '#ffffff',
                   fontWeight: 600
                 }}
                 onClick={() => handleScrollTo('projects')}
@@ -170,11 +186,11 @@ export default function App() {
               <SpecularButton
                 size="lg"
                 radius={16}
-                tint={isDark ? '#FEFFFA' : '#08090B'}
-                tintOpacity={0.04}
-                textColor={isDark ? '#FEFFFA' : '#08090B'}
-                lineColor={isDark ? '#FEFFFA' : '#08090B'}
-                baseColor={isDark ? '#092742' : '#F5F3EF'}
+                tint={palette.text}
+                tintOpacity={isDark ? 0.04 : 0.08}
+                textColor={palette.secondaryBtnText || palette.text}
+                lineColor={palette.text}
+                baseColor={palette.secondaryBtnBg || palette.surface}
                 intensity={0.8}
                 idleIntensity={0.25}
                 shineSize={10}
@@ -184,9 +200,11 @@ export default function App() {
                 followMouse
                 proximity={240}
                 style={{
-                  backgroundColor: isDark ? '#0e375c' : 'rgba(8, 9, 11, 0.05)',
-                  color: isDark ? '#FEFFFA' : '#08090B',
-                  borderColor: isDark ? 'rgba(254, 255, 250, 0.14)' : 'rgba(8, 9, 11, 0.14)'
+                  backgroundColor: palette.secondaryBtnBg || palette.surface,
+                  color: palette.secondaryBtnText || palette.text,
+                  borderColor: palette.secondaryBtnBorder || palette.border,
+                  borderWidth: '1px',
+                  borderStyle: 'solid'
                 }}
                 onClick={() => handleScrollTo('contact')}
               >
@@ -196,8 +214,8 @@ export default function App() {
 
             {/* Visual Hero Showcase via BounceCards */}
             <div className="w-full flex flex-col items-center justify-center pt-2">
-              <div className={`text-xs uppercase tracking-wider ${isDark ? 'text-[#FEFFFA]/50' : 'text-[#08090B]/60'} mb-5 font-mono flex items-center gap-2`}>
-                <span className={`w-1.5 h-1.5 rounded-full ${isDark ? 'bg-[#D23A00]' : 'bg-[#FFC900]'}`} />
+              <div className="text-xs uppercase tracking-wider mb-5 font-mono flex items-center gap-2" style={{ color: palette.textMuted }}>
+                <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: palette.accent }} />
                 Interactive Visual Gallery • Hover to Straighten Cards
               </div>
               <div className="w-full max-w-[500px] h-[310px] flex items-center justify-center">
@@ -215,7 +233,7 @@ export default function App() {
                   animationDelay={0.4}
                   animationStagger={0.06}
                   borderWidth={3}
-                  borderColor={isDark ? '#FEFFFA' : '#08090B'}
+                  borderColor={palette.text}
                   radius={20}
                   shadow
                   enableHover
@@ -244,8 +262,8 @@ export default function App() {
                 fontWeight={600}
                 fontSize={sectionHeadingSize}
                 fontFamily="'SF Pro Display', -apple-system, 'Inter', sans-serif"
-                color={isDark ? '#FEFFFA' : '#08090B'}
-                accentColor={isDark ? '#D23A00' : '#FFC900'}
+                color={palette.text}
+                accentColor={palette.accent}
                 reveal="letter"
                 dashLength={4}
                 dashGap={2}
@@ -257,7 +275,7 @@ export default function App() {
               />
             </div>
 
-            <p className={`${isDark ? 'text-[#FEFFFA]/70' : 'text-[#08090B]/70'} text-base sm:text-lg max-w-2xl mb-10 leading-relaxed`}>
+            <p className="text-base sm:text-lg max-w-2xl mb-10 leading-relaxed" style={{ color: palette.textMuted }}>
               {data.skills.subtitle}
             </p>
 
@@ -265,20 +283,20 @@ export default function App() {
               {data.skills.categories.map((cat) => (
                 <div
                   key={cat.id}
-                  className={`p-7 sm:p-8 rounded-2xl ${
-                    isDark
-                      ? 'bg-[#FEFFFA]/[0.03] border border-[#FEFFFA]/10 hover:border-[#D23A00]/40'
-                      : 'bg-[#08090B]/[0.03] border border-[#08090B]/10 hover:border-[#FFC900]/60'
-                  } transition-colors duration-200 flex flex-col justify-between`}
+                  className="p-7 sm:p-8 rounded-2xl border transition-colors duration-200 flex flex-col justify-between"
+                  style={{
+                    backgroundColor: palette.cardBg,
+                    borderColor: palette.border
+                  }}
                 >
                   <div>
                     <div className="flex items-center justify-between mb-3">
-                      <h3 className={`text-xl font-semibold ${isDark ? 'text-[#FEFFFA]' : 'text-[#08090B]'}`}>
+                      <h3 className="text-xl font-semibold" style={{ color: palette.text }}>
                         {cat.title}
                       </h3>
-                      <span className={`w-2 h-2 rounded-full ${isDark ? 'bg-[#D23A00]' : 'bg-[#FFC900]'}`} />
+                      <span className="w-2 h-2 rounded-full" style={{ backgroundColor: palette.accent }} />
                     </div>
-                    <p className={`text-sm ${isDark ? 'text-[#FEFFFA]/65' : 'text-[#08090B]/65'} mb-6 leading-relaxed`}>
+                    <p className="text-sm mb-6 leading-relaxed" style={{ color: palette.textMuted }}>
                       {cat.description}
                     </p>
                   </div>
@@ -287,11 +305,12 @@ export default function App() {
                     {cat.skills.map((skill, sIdx) => (
                       <span
                         key={sIdx}
-                        className={`px-3 py-1.5 rounded-lg ${
-                          isDark
-                            ? 'bg-[#FEFFFA]/[0.05] text-[#FEFFFA]/90 border border-[#FEFFFA]/10 hover:border-[#FEFFFA]/25'
-                            : 'bg-[#08090B]/[0.05] text-[#08090B]/90 border border-[#08090B]/10 hover:border-[#08090B]/25'
-                        } text-xs sm:text-sm font-mono transition-colors cursor-default`}
+                        className="px-3 py-1.5 rounded-lg border text-xs sm:text-sm font-mono transition-colors cursor-default"
+                        style={{
+                          backgroundColor: palette.badgeBg,
+                          borderColor: palette.border,
+                          color: palette.text
+                        }}
                       >
                         {skill}
                       </span>
@@ -322,8 +341,8 @@ export default function App() {
                 fontWeight={600}
                 fontSize={sectionHeadingSize}
                 fontFamily="'SF Pro Display', -apple-system, 'Inter', sans-serif"
-                color={isDark ? '#FEFFFA' : '#08090B'}
-                accentColor={isDark ? '#D23A00' : '#FFC900'}
+                color={palette.text}
+                accentColor={palette.accent}
                 reveal="letter"
                 dashLength={4}
                 dashGap={2}
@@ -335,7 +354,7 @@ export default function App() {
               />
             </div>
 
-            <p className={`${isDark ? 'text-[#FEFFFA]/70' : 'text-[#08090B]/70'} text-base sm:text-lg max-w-2xl mb-10 leading-relaxed`}>
+            <p className="text-base sm:text-lg max-w-2xl mb-10 leading-relaxed" style={{ color: palette.textMuted }}>
               {data.projects.subtitle}
             </p>
 
@@ -343,43 +362,49 @@ export default function App() {
               {data.projects.items.map((proj) => (
                 <div
                   key={proj.id}
-                  className={`p-8 sm:p-10 rounded-2xl ${
-                    isDark
-                      ? 'bg-[#FEFFFA]/[0.03] border border-[#FEFFFA]/10 hover:border-[#D23A00]/40'
-                      : 'bg-[#08090B]/[0.03] border border-[#08090B]/10 hover:border-[#FFC900]/60'
-                  } transition-colors duration-200 flex flex-col xl:flex-row gap-8 items-center justify-between`}
+                  className="p-8 sm:p-10 rounded-2xl border transition-colors duration-200 flex flex-col xl:flex-row gap-8 items-center justify-between"
+                  style={{
+                    backgroundColor: palette.cardBg,
+                    borderColor: palette.border
+                  }}
                 >
                   {/* Left Column: Project Details */}
                   <div className="flex-1 max-w-xl">
-                    <div className={`inline-block px-3 py-1 rounded-full text-xs font-mono font-medium mb-3 ${
-                      isDark
-                        ? 'bg-[#D23A00]/15 text-[#D23A00]'
-                        : 'bg-[#FFC900]/25 text-[#08090B] border border-[#FFC900]/50 font-semibold'
-                    }`}>
+                    <div
+                      className="inline-block px-3 py-1 rounded-full text-xs font-mono font-medium mb-3 border"
+                      style={{
+                        backgroundColor: palette.badgeBg,
+                        borderColor: palette.badgeBorder,
+                        color: palette.badgeText
+                      }}
+                    >
                       {proj.badge}
                     </div>
-                    <h3 className={`text-2xl font-semibold ${isDark ? 'text-[#FEFFFA]' : 'text-[#08090B]'} mb-3`}>
+                    <h3 className="text-2xl font-semibold mb-3" style={{ color: palette.text }}>
                       {proj.title}
                     </h3>
-                    <p className={`${isDark ? 'text-[#FEFFFA]/75' : 'text-[#08090B]/75'} text-base leading-relaxed mb-5`}>
+                    <p className="text-base leading-relaxed mb-5" style={{ color: palette.textMuted }}>
                       {proj.description}
                     </p>
 
                     {/* Metric Banner */}
-                    <div className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg ${
-                      isDark
-                        ? 'bg-[#FEFFFA]/[0.04] border border-[#FEFFFA]/10 text-[#FEFFFA]/85'
-                        : 'bg-[#08090B]/[0.04] border border-[#08090B]/10 text-[#08090B]/85'
-                    } font-mono text-xs mb-5`}>
-                      <span className={`w-2 h-2 rounded-full ${isDark ? 'bg-[#D23A00]' : 'bg-[#FFC900]'}`} />
+                    <div
+                      className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg border font-mono text-xs mb-5"
+                      style={{
+                        backgroundColor: palette.badgeBg,
+                        borderColor: palette.border,
+                        color: palette.text
+                      }}
+                    >
+                      <span className="w-2 h-2 rounded-full" style={{ backgroundColor: palette.accent }} />
                       <span>{proj.metric}</span>
                     </div>
 
                     {/* Highlights */}
                     <div className="space-y-1.5 mb-6">
                       {proj.highlights.map((h, hIdx) => (
-                        <div key={hIdx} className={`flex items-start gap-2 text-sm ${isDark ? 'text-[#FEFFFA]/70' : 'text-[#08090B]/70'}`}>
-                          <span className={`mt-0.5 ${isDark ? 'text-[#D23A00]' : 'text-[#FFC900]'}`}>•</span>
+                        <div key={hIdx} className="flex items-start gap-2 text-sm" style={{ color: palette.textMuted }}>
+                          <span className="mt-0.5" style={{ color: palette.accent }}>•</span>
                           <span>{h}</span>
                         </div>
                       ))}
@@ -390,11 +415,12 @@ export default function App() {
                       {proj.stack.map((tech, tIdx) => (
                         <span
                           key={tIdx}
-                          className={`px-2.5 py-1 rounded-md ${
-                            isDark
-                              ? 'bg-[#FEFFFA]/[0.05] text-[#FEFFFA]/80 border border-[#FEFFFA]/10'
-                              : 'bg-[#08090B]/[0.05] text-[#08090B]/80 border border-[#08090B]/10'
-                          } text-xs font-mono`}
+                          className="px-2.5 py-1 rounded-md border text-xs font-mono"
+                          style={{
+                            backgroundColor: palette.badgeBg,
+                            borderColor: palette.border,
+                            color: palette.text
+                          }}
                         >
                           {tech}
                         </span>
@@ -406,11 +432,11 @@ export default function App() {
                       <SpecularButton
                         size="md"
                         radius={14}
-                        tint={isDark ? '#FEFFFA' : '#08090B'}
+                        tint={palette.text}
                         tintOpacity={0.06}
-                        textColor={isDark ? '#FEFFFA' : '#08090B'}
-                        lineColor={isDark ? '#FEFFFA' : '#08090B'}
-                        baseColor={isDark ? '#D23A00' : '#FFC900'}
+                        textColor="#ffffff"
+                        lineColor={palette.text}
+                        baseColor={palette.specularPrimaryBase}
                         intensity={1}
                         idleIntensity={0.35}
                         shineSize={10}
@@ -420,8 +446,8 @@ export default function App() {
                         followMouse
                         proximity={200}
                         style={{
-                          backgroundColor: isDark ? '#D23A00' : '#FFC900',
-                          color: isDark ? '#FEFFFA' : '#08090B',
+                          backgroundColor: palette.specularPrimaryBase,
+                          color: '#ffffff',
                           fontWeight: 600
                         }}
                         onClick={() => window.open(data.navigation.socialItems[0].link, '_blank')}
@@ -432,11 +458,11 @@ export default function App() {
                       <SpecularButton
                         size="md"
                         radius={14}
-                        tint={isDark ? '#FEFFFA' : '#08090B'}
-                        tintOpacity={0.04}
-                        textColor={isDark ? '#FEFFFA' : '#08090B'}
-                        lineColor={isDark ? '#FEFFFA' : '#08090B'}
-                        baseColor={isDark ? '#092742' : '#F5F3EF'}
+                        tint={palette.text}
+                        tintOpacity={isDark ? 0.04 : 0.08}
+                        textColor={palette.secondaryBtnText || palette.text}
+                        lineColor={palette.text}
+                        baseColor={palette.secondaryBtnBg || palette.surface}
                         intensity={0.8}
                         idleIntensity={0.25}
                         shineSize={10}
@@ -446,9 +472,11 @@ export default function App() {
                         followMouse
                         proximity={200}
                         style={{
-                          backgroundColor: isDark ? '#0e375c' : 'rgba(8, 9, 11, 0.05)',
-                          color: isDark ? '#FEFFFA' : '#08090B',
-                          borderColor: isDark ? 'rgba(254, 255, 250, 0.14)' : 'rgba(8, 9, 11, 0.14)'
+                          backgroundColor: palette.secondaryBtnBg || palette.surface,
+                          color: palette.secondaryBtnText || palette.text,
+                          borderColor: palette.secondaryBtnBorder || palette.border,
+                          borderWidth: '1px',
+                          borderStyle: 'solid'
                         }}
                         onClick={() => handleScrollTo('contact')}
                       >
@@ -474,7 +502,7 @@ export default function App() {
                         animationDelay={0.3}
                         animationStagger={0.05}
                         borderWidth={3}
-                        borderColor={isDark ? '#FEFFFA' : '#08090B'}
+                        borderColor={palette.text}
                         radius={16}
                         shadow
                         enableHover
@@ -500,19 +528,21 @@ export default function App() {
             stagger={0.06}
             threshold={0.1}
           >
-            <div className={`p-8 sm:p-12 rounded-2xl ${
-              isDark
-                ? 'bg-[#FEFFFA]/[0.03] border border-[#FEFFFA]/10'
-                : 'bg-[#08090B]/[0.03] border border-[#08090B]/10'
-            } relative`}>
+            <div
+              className="p-8 sm:p-12 rounded-2xl border relative"
+              style={{
+                backgroundColor: palette.cardBg,
+                borderColor: palette.border
+              }}
+            >
               <div className="w-full h-[80px] sm:h-[100px] relative mb-3">
                 <TechText
                   text={data.contact.techHeading}
                   fontWeight={600}
                   fontSize={sectionHeadingSize * 0.85}
                   fontFamily="'SF Pro Display', -apple-system, 'Inter', sans-serif"
-                  color={isDark ? '#FEFFFA' : '#08090B'}
-                  accentColor={isDark ? '#D23A00' : '#FFC900'}
+                  color={palette.text}
+                  accentColor={palette.accent}
                   reveal="letter"
                   dashLength={4}
                   dashGap={2}
@@ -524,19 +554,22 @@ export default function App() {
                 />
               </div>
 
-              <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full ${
-                isDark
-                  ? 'bg-[#FEFFFA]/[0.05] border border-[#FEFFFA]/10 text-[#FEFFFA]/85'
-                  : 'bg-[#08090B]/[0.05] border border-[#08090B]/10 text-[#08090B]/85'
-              } text-xs font-mono mb-4`}>
-                <span className={`w-1.5 h-1.5 rounded-full ${isDark ? 'bg-[#D23A00]' : 'bg-[#FFC900]'}`} />
+              <div
+                className="inline-flex items-center gap-2 px-3 py-1 rounded-full border text-xs font-mono mb-4"
+                style={{
+                  backgroundColor: palette.badgeBg,
+                  borderColor: palette.badgeBorder,
+                  color: palette.text
+                }}
+              >
+                <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: palette.accent }} />
                 <span>{data.contact.status}</span>
               </div>
 
-              <h3 className={`text-2xl sm:text-3xl font-semibold ${isDark ? 'text-[#FEFFFA]' : 'text-[#08090B]'} tracking-tight mb-3 max-w-xl leading-tight`}>
+              <h3 className="text-2xl sm:text-3xl font-semibold tracking-tight mb-3 max-w-xl leading-tight" style={{ color: palette.text }}>
                 {data.contact.headline}
               </h3>
-              <p className={`text-base ${isDark ? 'text-[#FEFFFA]/70' : 'text-[#08090B]/70'} max-w-xl mb-8 leading-relaxed`}>
+              <p className="text-base max-w-xl mb-8 leading-relaxed" style={{ color: palette.textMuted }}>
                 {data.contact.description}
               </p>
 
@@ -545,11 +578,11 @@ export default function App() {
                 <SpecularButton
                   size="lg"
                   radius={16}
-                  tint={isDark ? '#FEFFFA' : '#08090B'}
+                  tint={palette.text}
                   tintOpacity={0.06}
-                  textColor={isDark ? '#FEFFFA' : '#08090B'}
-                  lineColor={isDark ? '#FEFFFA' : '#08090B'}
-                  baseColor={isDark ? '#D23A00' : '#FFC900'}
+                  textColor="#ffffff"
+                  lineColor={palette.text}
+                  baseColor={palette.specularPrimaryBase}
                   intensity={1}
                   idleIntensity={0.35}
                   shineSize={10}
@@ -559,8 +592,8 @@ export default function App() {
                   followMouse
                   proximity={240}
                   style={{
-                    backgroundColor: isDark ? '#D23A00' : '#FFC900',
-                    color: isDark ? '#FEFFFA' : '#08090B',
+                    backgroundColor: palette.specularPrimaryBase,
+                    color: '#ffffff',
                     fontWeight: 600
                   }}
                   onClick={() => {
@@ -573,11 +606,11 @@ export default function App() {
                 <SpecularButton
                   size="lg"
                   radius={16}
-                  tint={isDark ? '#FEFFFA' : '#08090B'}
-                  tintOpacity={0.04}
-                  textColor={isDark ? '#FEFFFA' : '#08090B'}
-                  lineColor={isDark ? '#FEFFFA' : '#08090B'}
-                  baseColor={isDark ? '#092742' : '#F5F3EF'}
+                  tint={palette.text}
+                  tintOpacity={isDark ? 0.04 : 0.08}
+                  textColor={palette.secondaryBtnText || palette.text}
+                  lineColor={palette.text}
+                  baseColor={palette.secondaryBtnBg || palette.surface}
                   intensity={0.8}
                   idleIntensity={0.25}
                   shineSize={10}
@@ -587,9 +620,11 @@ export default function App() {
                   followMouse
                   proximity={240}
                   style={{
-                    backgroundColor: isDark ? '#0e375c' : 'rgba(8, 9, 11, 0.05)',
-                    color: isDark ? '#FEFFFA' : '#08090B',
-                    borderColor: isDark ? 'rgba(254, 255, 250, 0.14)' : 'rgba(8, 9, 11, 0.14)'
+                    backgroundColor: palette.secondaryBtnBg || palette.surface,
+                    color: palette.secondaryBtnText || palette.text,
+                    borderColor: palette.secondaryBtnBorder || palette.border,
+                    borderWidth: '1px',
+                    borderStyle: 'solid'
                   }}
                   onClick={() => window.open(data.contact.github, '_blank')}
                 >
@@ -599,11 +634,11 @@ export default function App() {
                 <SpecularButton
                   size="lg"
                   radius={16}
-                  tint={isDark ? '#FEFFFA' : '#08090B'}
-                  tintOpacity={0.04}
-                  textColor={isDark ? '#FEFFFA' : '#08090B'}
-                  lineColor={isDark ? '#FEFFFA' : '#08090B'}
-                  baseColor={isDark ? '#092742' : '#F5F3EF'}
+                  tint={palette.text}
+                  tintOpacity={isDark ? 0.04 : 0.08}
+                  textColor={palette.secondaryBtnText || palette.text}
+                  lineColor={palette.text}
+                  baseColor={palette.secondaryBtnBg || palette.surface}
                   intensity={0.8}
                   idleIntensity={0.25}
                   shineSize={10}
@@ -613,9 +648,11 @@ export default function App() {
                   followMouse
                   proximity={240}
                   style={{
-                    backgroundColor: isDark ? '#0e375c' : 'rgba(8, 9, 11, 0.05)',
-                    color: isDark ? '#FEFFFA' : '#08090B',
-                    borderColor: isDark ? 'rgba(254, 255, 250, 0.14)' : 'rgba(8, 9, 11, 0.14)'
+                    backgroundColor: palette.secondaryBtnBg || palette.surface,
+                    color: palette.secondaryBtnText || palette.text,
+                    borderColor: palette.secondaryBtnBorder || palette.border,
+                    borderWidth: '1px',
+                    borderStyle: 'solid'
                   }}
                   onClick={() => window.open(data.contact.linkedin, '_blank')}
                 >
@@ -624,15 +661,15 @@ export default function App() {
               </div>
 
               {/* Bottom Footer Specs */}
-              <div className={`pt-6 border-t ${
-                isDark ? 'border-[#FEFFFA]/10 text-[#FEFFFA]/50' : 'border-[#08090B]/10 text-[#08090B]/50'
-              } flex flex-wrap justify-between items-center text-xs font-mono gap-3`}>
+              <div
+                className="pt-6 border-t flex flex-wrap justify-between items-center text-xs font-mono gap-3"
+                style={{
+                  borderColor: palette.border,
+                  color: palette.textMuted
+                }}
+              >
                 <div>Muhammad Ali Baig • {data.contact.location}</div>
-                <div>
-                  {isDark
-                    ? 'Cyan Navy #092742 • Ghost White #FEFFFA • Neon Pear #D23A00'
-                    : '#F5F3EF (60%) • #08090B (40%) • #FFC900 (10%)'}
-                </div>
+                <div>{palette.proportions}</div>
               </div>
             </div>
           </AnimatedContent>

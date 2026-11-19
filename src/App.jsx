@@ -4,10 +4,17 @@ import StaggeredMenu from './components/StaggeredMenu';
 import TechText from './components/TechText';
 import AnimatedContent from './components/AnimatedContent';
 import BounceCards from './components/BounceCards';
+import FlexCarousel from './components/FlexCarousel';
 import SpecularButton from './components/SpecularButton';
 import ThemeToggle from './components/ThemeToggle';
 import { getPalette, applyThemeToDocument, DEFAULT_THEME_ID, THEME_PALETTES } from './lib/themes';
 import data from './data/portfolioData.json';
+
+const carouselItems = [
+  { src: '/images/one.jpg', alt: 'A chrome sculpture', title: 'Iridescence' },
+  { src: '/images/two.jpg', alt: 'A figure on a white set', title: 'White Room' },
+  { src: '/images/three.jpg', alt: 'A clay bust in profile', title: 'Clay Study', subtitle: 'Studio 04' }
+];
 
 export default function App() {
   const [windowWidth, setWindowWidth] = useState(
@@ -212,33 +219,19 @@ export default function App() {
               </SpecularButton>
             </div>
 
-            {/* Visual Hero Showcase via BounceCards */}
-            <div className="w-full flex flex-col items-center justify-center pt-2">
-              <div className="text-xs uppercase tracking-wider mb-5 font-mono flex items-center gap-2" style={{ color: palette.textMuted }}>
-                <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: palette.accent }} />
-                Interactive Visual Gallery • Hover to Straighten Cards
-              </div>
-              <div className="w-full max-w-[500px] h-[310px] flex items-center justify-center">
-                <BounceCards
-                  images={data.hero.galleryImages}
-                  containerWidth={windowWidth < 600 ? Math.min(windowWidth - 40, 340) : 480}
-                  containerHeight={300}
-                  cardSize={windowWidth < 600 ? 150 : 190}
-                  spread={windowWidth < 600 ? 60 : 80}
-                  rotation={8}
-                  arc={0}
-                  pushDistance={140}
-                  hoverScale={1.05}
-                  bounciness={0.55}
-                  animationDelay={0.4}
-                  animationStagger={0.06}
-                  borderWidth={3}
-                  borderColor={palette.text}
-                  radius={20}
-                  shadow
-                  enableHover
-                />
-              </div>
+            {/* FlexCarousel Visual Showcase */}
+            <div style={{ width: '100%', height: '560px', position: 'relative' }}>
+              <FlexCarousel
+                items={carouselItems}
+                preset="liquid"
+                intro="deal"
+                cardHeight={0.5}
+                gap={12}
+                squeeze={0.2}
+                focusOnClick
+                captions
+                liquid={1}
+              />
             </div>
           </AnimatedContent>
         </section>

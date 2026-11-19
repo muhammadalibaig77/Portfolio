@@ -1,5 +1,5 @@
-// Theme palette definitions strictly using user-provided 60-30-10 colors
-// Swapping opposites for Dark Mode and Light Mode with zero added colors
+// Theme palette definitions supporting 60-30-10 color proportions
+// Tuned for optimal contrast, readability, and comfort across all modes
 
 export const THEME_PALETTES = {
   gothic: {
@@ -180,54 +180,54 @@ export const THEME_PALETTES = {
     dark: {
       id: 'dreamcore',
       name: 'Dream Core',
-      bg: '#87CEEB', // Sky Blue 60%
-      surface: '#FFC0CB', // Cotton Pink 30%
+      bg: '#0A1624', // Deep Midnight Sky (comfortable, not blinding)
+      surface: '#1E1428', // Dusky Pink Surface 30%
       accent: '#FFF917', // Dream Yellow 10%
       accentGlow: 'rgba(255, 249, 23, 0.65)',
-      accentHover: '#FFF917',
-      text: '#FFC0CB',
-      textMuted: 'rgba(255, 192, 203, 0.85)',
-      border: 'rgba(255, 192, 203, 0.4)',
-      cardBg: 'rgba(255, 192, 203, 0.15)',
+      accentHover: '#fffb47',
+      text: '#F0F8FF', // Alice Cloud White
+      textMuted: 'rgba(240, 248, 255, 0.75)',
+      border: 'rgba(135, 206, 235, 0.3)',
+      cardBg: 'rgba(135, 206, 235, 0.08)',
       cardHoverBorder: '#FFF917',
-      badgeBg: 'rgba(255, 249, 23, 0.2)',
-      badgeBorder: '#FFF917',
+      badgeBg: 'rgba(255, 249, 23, 0.15)',
+      badgeBorder: 'rgba(255, 249, 23, 0.45)',
       badgeText: '#FFF917',
-      menuColors: ['#FFC0CB', '#87CEEB'],
-      menuPanelBg: '#87CEEB',
-      specularPrimaryBase: '#FFF917',
+      menuColors: ['#1E1428', '#0A1624'],
+      menuPanelBg: '#0A1624',
+      specularPrimaryBase: '#87CEEB',
       specularSecondaryBase: '#FFC0CB',
-      secondaryBtnBg: '#FFC0CB',
-      secondaryBtnText: '#87CEEB',
-      secondaryBtnBorder: '#FFF917',
+      secondaryBtnBg: 'rgba(255, 192, 203, 0.18)',
+      secondaryBtnText: '#FFC0CB',
+      secondaryBtnBorder: 'rgba(135, 206, 235, 0.4)',
       dotGlow: '#FFF917',
       proportions: 'Sky Blue #87CEEB (60%) • Cotton Pink #FFC0CB (30%) • Dream Yellow #FFF917 (10%)'
     },
     light: {
       id: 'dreamcore',
       name: 'Dream Core',
-      bg: '#FFC0CB', // Cotton Pink (Opposite)
-      surface: '#87CEEB', // Sky Blue (Opposite)
-      accent: '#FFF917', // Dream Yellow 10%
-      accentGlow: 'rgba(255, 249, 23, 0.5)',
-      accentHover: '#FFF917',
-      text: '#87CEEB',
-      textMuted: 'rgba(135, 206, 235, 0.85)',
-      border: 'rgba(135, 206, 235, 0.4)',
-      cardBg: 'rgba(135, 206, 235, 0.2)',
-      cardHoverBorder: '#FFF917',
-      badgeBg: 'rgba(255, 249, 23, 0.25)',
-      badgeBorder: '#FFF917',
-      badgeText: '#87CEEB',
-      menuColors: ['#87CEEB', '#FFC0CB'],
-      menuPanelBg: '#FFC0CB',
-      specularPrimaryBase: '#FFF917',
-      specularSecondaryBase: '#87CEEB',
-      secondaryBtnBg: '#87CEEB',
-      secondaryBtnText: '#FFC0CB',
-      secondaryBtnBorder: '#FFF917',
-      dotGlow: '#87CEEB',
-      proportions: 'Cotton Pink #FFC0CB (60%) • Sky Blue #87CEEB (30%) • Dream Yellow #FFF917 (10%)'
+      bg: '#EBF5FA', // Soft Cloud Sky (calm, gentle, not blinding)
+      surface: '#FCEAF0', // Soft Pastel Pink
+      accent: '#D49500', // Deep Dream Yellow Amber (readable on light)
+      accentGlow: 'rgba(212, 149, 0, 0.4)',
+      accentHover: '#b88100',
+      text: '#0F243A', // Deep Sky Navy
+      textMuted: 'rgba(15, 36, 58, 0.75)',
+      border: 'rgba(135, 206, 235, 0.45)',
+      cardBg: 'rgba(255, 255, 255, 0.75)',
+      cardHoverBorder: '#D49500',
+      badgeBg: 'rgba(255, 249, 23, 0.4)',
+      badgeBorder: 'rgba(212, 149, 0, 0.5)',
+      badgeText: '#8A6000',
+      menuColors: ['#FFC0CB', '#EBF5FA'],
+      menuPanelBg: '#EBF5FA',
+      specularPrimaryBase: '#87CEEB',
+      specularSecondaryBase: 'rgba(255, 192, 203, 0.4)',
+      secondaryBtnBg: 'rgba(255, 192, 203, 0.45)',
+      secondaryBtnText: '#0F243A',
+      secondaryBtnBorder: 'rgba(135, 206, 235, 0.5)',
+      dotGlow: '#0F243A',
+      proportions: 'Sky Blue #87CEEB (60%) • Cotton Pink #FFC0CB (30%) • Dream Yellow #FFF917 (10%)'
     }
   },
   oceanpearl: {
@@ -263,12 +263,12 @@ export const THEME_PALETTES = {
     light: {
       id: 'oceanpearl',
       name: 'Ocean Pearl',
-      bg: '#F9F6EE', // Pearl White 30% (Opposite)
+      bg: '#F9F6EE', // Pearl White 30%
       surface: '#F9F6EE',
       accent: '#FFC0CB', // Coral Pink 10%
       accentGlow: 'rgba(255, 192, 203, 0.5)',
       accentHover: '#FFC0CB',
-      text: '#0077BE', // Ocean Blue 60% (Opposite)
+      text: '#0077BE', // Ocean Blue 60%
       textMuted: 'rgba(0, 119, 190, 0.8)',
       border: 'rgba(0, 119, 190, 0.25)',
       cardBg: 'rgba(0, 119, 190, 0.06)',
@@ -294,53 +294,53 @@ export const THEME_PALETTES = {
     dark: {
       id: 'scarletiris',
       name: 'Scarlet Iris',
-      bg: '#FF2400', // Scarlet 60%
-      surface: '#5D3FD3', // Royal Iris 10%
-      accent: '#5D3FD3', // Royal Iris 10%
-      accentGlow: 'rgba(93, 63, 211, 0.65)',
-      accentHover: '#5D3FD3',
+      bg: '#14061F', // Deep Nocturnal Iris (comfortable dark canvas, not blinding)
+      surface: '#260B3A', // Royal Iris Surface 30%
+      accent: '#FF2400', // Scarlet Fire 10% (vibrant glowing accents)
+      accentGlow: 'rgba(255, 36, 0, 0.65)',
+      accentHover: '#ff4324',
       text: '#F8F9FA', // Frost White 30%
-      textMuted: 'rgba(248, 249, 250, 0.82)',
-      border: 'rgba(248, 249, 250, 0.3)',
-      cardBg: 'rgba(248, 249, 250, 0.1)',
-      cardHoverBorder: '#5D3FD3',
-      badgeBg: 'rgba(93, 63, 211, 0.3)',
-      badgeBorder: '#5D3FD3',
-      badgeText: '#F8F9FA',
-      menuColors: ['#5D3FD3', '#FF2400'],
-      menuPanelBg: '#FF2400',
-      specularPrimaryBase: '#5D3FD3',
-      specularSecondaryBase: '#FF2400',
-      secondaryBtnBg: '#FF2400',
+      textMuted: 'rgba(248, 249, 250, 0.78)',
+      border: 'rgba(93, 63, 211, 0.4)',
+      cardBg: 'rgba(38, 11, 58, 0.55)',
+      cardHoverBorder: '#FF2400',
+      badgeBg: 'rgba(255, 36, 0, 0.2)',
+      badgeBorder: 'rgba(255, 36, 0, 0.5)',
+      badgeText: '#FF6B52',
+      menuColors: ['#260B3A', '#14061F'],
+      menuPanelBg: '#14061F',
+      specularPrimaryBase: '#FF2400',
+      specularSecondaryBase: '#5D3FD3',
+      secondaryBtnBg: '#5D3FD3',
       secondaryBtnText: '#F8F9FA',
-      secondaryBtnBorder: '#F8F9FA',
-      dotGlow: '#5D3FD3',
+      secondaryBtnBorder: 'rgba(93, 63, 211, 0.6)',
+      dotGlow: '#FF2400',
       proportions: 'Scarlet #FF2400 (60%) • Frost White #F8F9FA (30%) • Royal Iris #5D3FD3 (10%)'
     },
     light: {
       id: 'scarletiris',
       name: 'Scarlet Iris',
-      bg: '#F8F9FA', // Frost White 30% (Opposite)
-      surface: '#F8F9FA',
+      bg: '#F8F9FA', // Frost White 60%
+      surface: '#F2EBF5',
       accent: '#FF2400', // Scarlet 60%
       accentGlow: 'rgba(255, 36, 0, 0.45)',
       accentHover: '#FF2400',
-      text: '#FF2400', // Scarlet 60% (Opposite)
-      textMuted: 'rgba(255, 36, 0, 0.8)',
-      border: 'rgba(255, 36, 0, 0.25)',
-      cardBg: 'rgba(255, 36, 0, 0.05)',
-      cardHoverBorder: '#5D3FD3',
-      badgeBg: 'rgba(93, 63, 211, 0.15)',
-      badgeBorder: '#5D3FD3',
-      badgeText: '#5D3FD3',
+      text: '#1C0626', // Deep Royal Iris Ink
+      textMuted: 'rgba(28, 6, 38, 0.75)',
+      border: 'rgba(93, 63, 211, 0.25)',
+      cardBg: 'rgba(255, 255, 255, 0.75)',
+      cardHoverBorder: '#FF2400',
+      badgeBg: 'rgba(255, 36, 0, 0.12)',
+      badgeBorder: 'rgba(255, 36, 0, 0.35)',
+      badgeText: '#D81E00',
       menuColors: ['#FF2400', '#F8F9FA'],
       menuPanelBg: '#F8F9FA',
       specularPrimaryBase: '#FF2400',
-      specularSecondaryBase: '#F8F9FA',
-      secondaryBtnBg: '#F8F9FA',
-      secondaryBtnText: '#FF2400',
-      secondaryBtnBorder: '#FF2400',
-      dotGlow: '#5D3FD3',
+      specularSecondaryBase: 'rgba(93, 63, 211, 0.1)',
+      secondaryBtnBg: 'rgba(93, 63, 211, 0.1)',
+      secondaryBtnText: '#1C0626',
+      secondaryBtnBorder: 'rgba(93, 63, 211, 0.3)',
+      dotGlow: '#FF2400',
       proportions: 'Frost White #F8F9FA (60%) • Scarlet #FF2400 (30%) • Royal Iris #5D3FD3 (10%)'
     }
   },
@@ -351,12 +351,12 @@ export const THEME_PALETTES = {
     dark: {
       id: 'girlyvibes',
       name: 'Girly Vibes',
-      bg: '#8E4585', // Plum Orchid 30% (Darker opposite for Dark Mode)
+      bg: '#8E4585', // Plum Orchid 30%
       surface: '#8E4585',
       accent: '#0066FF', // Electric Cobalt 10%
       accentGlow: 'rgba(0, 102, 255, 0.65)',
       accentHover: '#0066FF',
-      text: '#FC8EAC', // Flamingo Pink 60% (Lighter opposite for text)
+      text: '#FC8EAC', // Flamingo Pink 60%
       textMuted: 'rgba(252, 142, 172, 0.8)',
       border: 'rgba(252, 142, 172, 0.3)',
       cardBg: 'rgba(252, 142, 172, 0.1)',
@@ -377,12 +377,12 @@ export const THEME_PALETTES = {
     light: {
       id: 'girlyvibes',
       name: 'Girly Vibes',
-      bg: '#FC8EAC', // Flamingo Pink 60% (Lighter opposite for Light Mode)
+      bg: '#FC8EAC', // Flamingo Pink 60%
       surface: '#FC8EAC',
       accent: '#0066FF', // Electric Cobalt 10%
       accentGlow: 'rgba(0, 102, 255, 0.5)',
       accentHover: '#0066FF',
-      text: '#8E4585', // Plum Orchid 30% (Darker opposite for text)
+      text: '#8E4585', // Plum Orchid 30%
       textMuted: 'rgba(142, 69, 133, 0.85)',
       border: 'rgba(142, 69, 133, 0.3)',
       cardBg: 'rgba(142, 69, 133, 0.08)',

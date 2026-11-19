@@ -399,6 +399,66 @@ export const StaggeredMenu = ({
           <span className="w-2.5 h-2.5 rounded-full border border-white/20 shadow-sm" style={{ backgroundColor: isDark ? '#00FF88' : '#047857' }} />
         </span>
       )
+    },
+    {
+      id: 'dreamcore',
+      title: 'Dream Core',
+      description: isDark
+        ? 'Dark Sky 60% • Dusky Rose 30% • Dream Yellow 10%'
+        : 'Sky Blue 60% • Cotton Pink 30% • Dream Yellow 10%',
+      meta: currentTheme === 'dreamcore' ? 'Active' : 'Select',
+      icon: (
+        <span className="flex items-center gap-1">
+          <span className="w-2.5 h-2.5 rounded-full border border-white/20 shadow-sm" style={{ backgroundColor: isDark ? '#08131E' : '#87CEEB' }} />
+          <span className="w-2.5 h-2.5 rounded-full border border-white/20 shadow-sm" style={{ backgroundColor: isDark ? '#1E122A' : '#FFC0CB' }} />
+          <span className="w-2.5 h-2.5 rounded-full border border-white/20 shadow-sm" style={{ backgroundColor: '#FFF917' }} />
+        </span>
+      )
+    },
+    {
+      id: 'oceanpearl',
+      title: 'Ocean Pearl',
+      description: isDark
+        ? 'Abyss Navy 60% • Ocean Blue 30% • Coral Pink 10%'
+        : 'Pearl White 60% • Ocean Blue 30% • Coral Pink 10%',
+      meta: currentTheme === 'oceanpearl' ? 'Active' : 'Select',
+      icon: (
+        <span className="flex items-center gap-1">
+          <span className="w-2.5 h-2.5 rounded-full border border-white/20 shadow-sm" style={{ backgroundColor: isDark ? '#021526' : '#F9F6EE' }} />
+          <span className="w-2.5 h-2.5 rounded-full border border-white/20 shadow-sm" style={{ backgroundColor: '#0077BE' }} />
+          <span className="w-2.5 h-2.5 rounded-full border border-white/20 shadow-sm" style={{ backgroundColor: '#FFC0CB' }} />
+        </span>
+      )
+    },
+    {
+      id: 'scarletiris',
+      title: 'Scarlet Iris',
+      description: isDark
+        ? 'Scarlet Obsidian 60% • Crimson 30% • Royal Iris 10%'
+        : 'Frost White 60% • Scarlet 30% • Royal Iris 10%',
+      meta: currentTheme === 'scarletiris' ? 'Active' : 'Select',
+      icon: (
+        <span className="flex items-center gap-1">
+          <span className="w-2.5 h-2.5 rounded-full border border-white/20 shadow-sm" style={{ backgroundColor: isDark ? '#130305' : '#F8F9FA' }} />
+          <span className="w-2.5 h-2.5 rounded-full border border-white/20 shadow-sm" style={{ backgroundColor: '#FF2400' }} />
+          <span className="w-2.5 h-2.5 rounded-full border border-white/20 shadow-sm" style={{ backgroundColor: '#5D3FD3' }} />
+        </span>
+      )
+    },
+    {
+      id: 'girlyvibes',
+      title: 'Girly Vibes',
+      description: isDark
+        ? 'Plum Velvet 60% • Plum Orchid 30% • Electric Cobalt 10%'
+        : 'Flamingo Pink 60% • Plum Orchid 30% • Electric Cobalt 10%',
+      meta: currentTheme === 'girlyvibes' ? 'Active' : 'Select',
+      icon: (
+        <span className="flex items-center gap-1">
+          <span className="w-2.5 h-2.5 rounded-full border border-white/20 shadow-sm" style={{ backgroundColor: isDark ? '#160815' : '#FC8EAC' }} />
+          <span className="w-2.5 h-2.5 rounded-full border border-white/20 shadow-sm" style={{ backgroundColor: '#8E4585' }} />
+          <span className="w-2.5 h-2.5 rounded-full border border-white/20 shadow-sm" style={{ backgroundColor: '#0066FF' }} />
+        </span>
+      )
     }
   ];
 
@@ -537,7 +597,7 @@ export const StaggeredMenu = ({
                   theme={isDark ? 'dark' : 'light'}
                   accentColor={accentColor}
                   width="100%"
-                  maxHeight={260}
+                  maxHeight={320}
                 />
               </div>
             )}

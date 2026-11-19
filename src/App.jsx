@@ -3,7 +3,6 @@ import DotField from './components/DotField';
 import StaggeredMenu from './components/StaggeredMenu';
 import TechText from './components/TechText';
 import AnimatedContent from './components/AnimatedContent';
-import BounceCards from './components/BounceCards';
 import FlexCarousel from './components/FlexCarousel';
 import SpecularButton from './components/SpecularButton';
 import ThemeToggle from './components/ThemeToggle';
@@ -478,29 +477,19 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* Right Column: Interactive Card Deck via BounceCards */}
-                  <div className="flex flex-col items-center justify-center p-2">
-                    <div className="w-[280px] sm:w-[340px] h-[240px] flex items-center justify-center">
-                      <BounceCards
-                        images={proj.gallery}
-                        containerWidth={windowWidth < 600 ? 280 : 340}
-                        containerHeight={230}
-                        cardSize={140}
-                        spread={55}
-                        rotation={6}
-                        arc={0}
-                        pushDistance={110}
-                        hoverScale={1.06}
-                        bounciness={0.55}
-                        animationDelay={0.3}
-                        animationStagger={0.05}
-                        borderWidth={3}
-                        borderColor={palette.text}
-                        radius={16}
-                        shadow
-                        enableHover
-                      />
-                    </div>
+                  {/* Right Column: Interactive Liquid FlexCarousel */}
+                  <div className="w-full xl:w-[480px] h-[340px] sm:h-[380px] relative rounded-2xl overflow-hidden flex items-center justify-center">
+                    <FlexCarousel
+                      items={carouselItems}
+                      preset="liquid"
+                      intro="deal"
+                      cardHeight={0.5}
+                      gap={12}
+                      squeeze={0.2}
+                      focusOnClick
+                      captions
+                      liquid={1}
+                    />
                   </div>
                 </div>
               ))}
